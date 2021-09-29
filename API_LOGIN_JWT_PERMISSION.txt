@@ -1,0 +1,47 @@
+
+###################################+++++++++++++++++++VIEWS.PY
+ class LoginView(TokenObtainPairView):
+     permission_classes = (AllowAny,)
+     serializer_class = AuthenticationSerializer
+
+
+
+
+
+class RegisterHodView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer=HodSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+
+
+####################################++++SERIALIZER.PY
+     
+# logic for authentication    
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer       
+class AuthenticationSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        refresh = self.get_token(self.user)
+        
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        data['id'] = self.user.id
+        data['email'] = self.user.email
+        data['username'] = self.user.username
+        # logger.info(f'User login successfully with this Credentials : {data}')
+        return data
+    
+    
+   

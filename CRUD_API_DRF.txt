@@ -1,0 +1,55 @@
+class UserViewSetDel(APIView):
+    def get_obj(self,id):
+        try:
+            return Faculty.objects.get(id=id)
+
+        except Faculty.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self,request,id):
+        obj = self.get_obj(id=id)
+        serializer = FacultySerializer(obj)
+        return Response(serializer.data)
+
+    def delete(self,request,id):
+        obj = self.get_obj(id)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+
+
+
+
+
+class UserViewSet3(APIView):
+    def get_obj(self,id):
+        try:
+            return Faculty.objects.get(id=id)
+
+        except Faculty.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self,request,id):
+        obj = self.get_obj(id=id)
+        serializer = FacultySerializer(obj)
+        return Response(serializer.data)
+
+    def put(self,request,id):
+        obj = self.get_obj(id)
+        serializer = FacultySerializer(obj,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+###################   URL CONFIGURATION   ###################### 
+
+path("ptup/<int:id>",views.UserViewSet3.as_view(),name="sdes"),

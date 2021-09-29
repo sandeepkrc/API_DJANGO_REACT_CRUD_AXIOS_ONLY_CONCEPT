@@ -1,0 +1,179 @@
+import React,{useState, useEffect}from 'react';
+import { Table } from 'react-bootstrap';
+import axios from 'axios';
+
+const ShowDepartment = () => {
+
+  const [name, setName] = useState([]);
+
+  const getUsers = () => {
+    
+    const response = axios.get(`http://127.0.0.1:8000/api/getDepartment/`)
+    .then(response => {
+      console.log(response.data)//line console
+      setName(response.data);
+  
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, [])
+
+  return(
+    <div>
+      {
+        name.map((curE)=>{
+          return(
+            <div><h1> {curE.name}</h1></div>
+          )
+        })
+      }  
+  </div>
+  )
+}
+export default ShowDepartment;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React,{useState, useEffect,setState}from 'react';
+import '../index.css'
+import { Table } from 'react-bootstrap';
+import axios from 'axios';
+import  {Redirect }  from 'react-router';
+import { Link } from 'react-router-dom';
+
+
+const Student = () => {
+
+  const [data, setdata] = useState([]);
+
+  const getUsers = async () => {
+    
+    const response = await axios.get(`http://127.0.0.1:8000/api/getStudent/`);
+    const result = await response.data;
+    setdata(result)
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, [])
+
+
+
+ 
+
+    const deleteRow = (id, e)=>{  
+    axios.delete(`http://127.0.0.1:8000/api/pdstudent/${id}/`)  
+      .then(res => {  
+        console.log(res);  
+        console.log(res.data); 
+        
+
+        <Redirect to="/showStudent" />
+        window.location.reload(false);
+        
+        
+      })  };
+
+
+
+
+
+      // const updeteRow = (id, e)=>{  
+      //   // axios.put(`http://127.0.0.1:8000/api/pdstudent/${id}/`)  
+      //   //   .then(res => {  
+      //       // console.log(res);  
+      //       // console.log(res.data); 
+            
+    
+      //       <Redirect to="/putStudent" />
+      //       window.location.reload(false);
+            
+            
+      //     // })  
+      //   };
+    
+    
+
+
+
+
+
+    
+    
+  
+
+
+
+
+
+
+
+
+
+  return(
+    <div class="centert">
+     <table>
+  <tr>
+    <th>ID</th>
+    <th>Student Name</th>
+    <th>Contact</th>
+    <th>Email</th>
+    <th>ADDRESS</th>
+    <th>YEAR</th>
+    
+    <th>ACTION</th>
+  </tr>
+  {data.map((curel)=>{
+      return(
+        <tr key={curel.name}>
+
+
+        <td>{curel.id}</td>
+        <td>{curel.name}</td>
+        <td>{curel.contactdetails}</td>
+        <td>{curel.email}</td>
+        <td>{curel.address}</td>
+        <td>{curel.yearofpassing}</td>
+        
+        
+        <td>
+        
+          <Link to={`/putStudent/${curel.id}`}> <button class="upd" >UPDATE </button></Link> 
+        
+                
+        
+          <span>
+          <button class="del" onClick={(e) => deleteRow(curel.id, e)}>Delete</button>
+          </span>
+
+
+
+        </td>
+      </tr>
+
+      )
+  })}
+</table>
+  </div>
+  )
+}
+
+export default Student;
