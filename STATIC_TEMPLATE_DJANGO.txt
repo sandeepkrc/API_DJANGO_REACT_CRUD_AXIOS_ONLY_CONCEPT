@@ -1,0 +1,37 @@
+##
+    FOR TEMPLATE 
+      1) create a folder name with templates in application dir 
+
+      2)  create a folder name with static in application dir 
+       
+      3) go to setting.py file then define template dir and staic dir
+     
+      4) then add in temaple section 
+
+
+
+import os
+TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
+
+TEMPLATE_DIR=os.path.join(BASE_DIR,'templates')
+STATIC_DIR=os.path.join(BASE_DIR,'static')
+
+
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [TEMPLATE_DIR],
+        'APP_DIRS': True,
+        'OPTIONS': {
+...............
+
+
+
+
+STATICFILES_DIRS=[
+STATIC_DIR,
+]
+
+
