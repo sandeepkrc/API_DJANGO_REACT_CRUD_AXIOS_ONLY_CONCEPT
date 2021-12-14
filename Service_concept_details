@@ -1,0 +1,114 @@
+// using class component(concept only)
+
+export const API_BASE_URL = "http://127.0.0.1:8000/";
+
+
+
+export const request = (options) => {
+    const headers = new Headers();
+    if (options.multipart === undefined) {
+        headers.append('Content-Type', 'application/json')
+    }
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+    return fetch(options.url, options)
+    .then(response =>
+        response.json().then(json => {
+            return json;
+        })
+    );
+};
+
+
+//===================end=======================
+
+// in Sevice.js file you need to write your service(calling the api)
+
+
+import { request } from './ApiUtils';
+import { API_BASE_URL } from './abc';
+
+
+class RoleMappingService extends Component {
+
+
+
+    //to fetchin one user details@sandeep
+    fetchOneUsers(id) {
+        return request({
+            url: `${API_BASE_URL}api/userdetails/${id}`,
+            method: 'GET'
+            // multipart: true
+        });
+    }
+    
+    
+    
+}
+export default new RoleMappingService;
+
+//===================end=======================
+
+
+function fetchonedetails(id)
+         {
+            RoleMappingService.fetchOneUsers(id)
+            .then((res)=>{
+                document.getElementById('1').value=res.first_name
+                document.getElementById('2').value=res.last_name
+                document.getElementById('3').value=res.email
+                document.getElementById('4').value=res.phone_number
+                document.getElementById('5').value= res.default_role
+ 
+
+            } 
+            )
+         }
+
+//===================end=======================
+
+
+     return (
+            <div>
+                <a  className="btn btn-primary btn-sm" onClick= {() => {fetchonedetails(row.id)}} style={{ width: "100%" }} data-toggle="modal" data-target="#exampleModal">
+                   {row.email}
+            
+                </a>
+                <div>
+              <div className="modal model-form" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ paddingTop: "3%" }}>
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content d-flex align-items-center" style={{ width: "50vw", marginLeft: "20%" }}>
+                            <h6>User details</h6>
+                            <form style={{ paddingBottom: "2%", width: "40vw" }}>
+                                <div class="form-group">
+                                    <label>Name</label>{console.log("b.first_name====",b)}
+                                    <input type="text" class="form-control" id='1' disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label>Last name</label>
+                                    <input type="text" class="form-control"  id='2' disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label>Email ID</label>
+                                    <input type="email" class="form-control" id='3'  disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="number" class="form-control"  id='4'  disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label>Default Role</label><br></br>
+                                    <input type="text" class="form-control"  id='5'  disabled />
+                                </div>
+
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        );
+    };
+
+//===================end=======================
